@@ -11,8 +11,16 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class TestSandBoxService : Service() {
+class TestSandBoxService : Service(), CoroutineScope by MainScope() {
+
+    private var job: Job? = null
+
     override fun onBind(p0: Intent?): IBinder? {
         TODO("Not yet implemented")
     }
@@ -34,9 +42,20 @@ class TestSandBoxService : Service() {
                     .build()
 
                 startForeground(101, notification)
-                val context = this
 
+                val context = this
                 val baseUrl: String = intent.getStringExtra("baseUrl").toString()
+                job = launch {
+                    while(true) {
+                        delay(60_000)
+                    }
+                }
+            }
+
+            IntentAction.STOP_FOREGROUND_SERVICE -> {
+                job?.cancel()
+                stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                stopSelfResult(startId)
             }
         }
 
