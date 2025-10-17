@@ -34,9 +34,12 @@ class MainActivity : AppCompatActivity() {
             val tvLog = findViewById<TextView>(R.id.tvLog)
             tvLog.append("\n" + binding.btnStart.text)
 
+            val etUrl = findViewById<TextView>(R.id.etUrl)
+            val baseUrl = etUrl.text
+
             val intent = Intent(this, TestSandBoxService::class.java)
-            //intent.action = IntentAction.START_FOREGROUND_SERVICE
-            //intent.putExtra("baseUrl", baseUrl.toString())
+            intent.action = IntentAction.START_FOREGROUND_SERVICE
+            intent.putExtra("baseUrl", baseUrl.toString())
             startForegroundService(intent)
         }
     }
