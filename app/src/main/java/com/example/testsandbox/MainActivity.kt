@@ -1,10 +1,13 @@
 package com.example.testsandbox
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testsandbox.databinding.ActivityMainBinding
 
@@ -15,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var scrollLog: ScrollView
     private val maxLines = 500
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,6 +29,16 @@ class MainActivity : AppCompatActivity() {
 
         tvLog = findViewById(R.id.tvLog)
         scrollLog = findViewById(R.id.scrollLog)
+
+        binding.btnStart.setOnClickListener {
+            val tvLog = findViewById<TextView>(R.id.tvLog)
+            tvLog.append("\n" + binding.btnStart.text)
+
+            val intent = Intent(this, TestSandBoxService::class.java)
+            //intent.action = IntentAction.START_FOREGROUND_SERVICE
+            //intent.putExtra("baseUrl", baseUrl.toString())
+            startForegroundService(intent)
+        }
     }
 
     fun appendLog(message: String) {
