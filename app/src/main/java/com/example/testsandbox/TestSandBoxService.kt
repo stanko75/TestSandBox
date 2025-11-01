@@ -21,7 +21,7 @@ class TestSandBoxService : Service(), CoroutineScope by MainScope() {
 
     private var job: Job? = null
 
-    override fun onBind(p0: Intent?): IBinder? {
+    override fun onBind(p0: Intent?): IBinder {
         TODO("Not yet implemented")
     }
 
@@ -43,11 +43,15 @@ class TestSandBoxService : Service(), CoroutineScope by MainScope() {
 
                 startForeground(101, notification)
 
-                val context = this
-                val baseUrl: String = intent.getStringExtra("baseUrl").toString()
+                var messageNumber = 0
                 job = launch {
                     while(true) {
-                        delay(60_000)
+                        messageNumber++
+                        val intent = Intent(IntentAction.TEST_MESSAGE_ACTION)
+                        intent.putExtra("message", "Message number: $messageNumber")
+                        intent.setPackage(packageName)
+                        sendBroadcast(intent)
+                        delay(1_000)
                     }
                 }
             }
