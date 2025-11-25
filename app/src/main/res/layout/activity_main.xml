@@ -38,7 +38,7 @@
         android:fillViewport="true"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/tvUrlLabel"
-        app:layout_constraintBottom_toTopOf="@id/btnStart"
+        app:layout_constraintBottom_toTopOf="@id/btnStartFusedLocationProviderClient"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -59,13 +59,28 @@
 
     <!-- Button unten -->
     <Button
-        android:id="@+id/btnStart"
-        android:layout_width="match_parent"
+        android:id="@+id/btnStartFusedLocationProviderClient"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start"
         android:layout_marginBottom="64dp"
+        android:textSize="8sp"
+        android:text="Start FusedLocationProviderClient"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnStartLocationManager"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnStartLocationManager"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Start LocationManager"
+        android:layout_marginBottom="64dp"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnStartFusedLocationProviderClient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnStartFusedLocationProviderClient"
+        android:layout_marginStart="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

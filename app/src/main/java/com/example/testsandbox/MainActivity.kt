@@ -25,6 +25,31 @@ class MainActivity : AppCompatActivity() {
 
         tvLog = findViewById(R.id.tvLog)
         scrollLog = findViewById(R.id.scrollLog)
+
+
+        var isSendingStartFusedLocationProviderClient = false
+        binding.btnStartFusedLocationProviderClient.setOnClickListener {
+            appendLog("\n" + binding.btnStartFusedLocationProviderClient.text)
+
+            isSendingStartFusedLocationProviderClient = !isSendingStartFusedLocationProviderClient
+            if (isSendingStartFusedLocationProviderClient) {
+                binding.btnStartFusedLocationProviderClient.text = "Stop FusedLocationProviderClient"
+            } else {
+                binding.btnStartFusedLocationProviderClient.text = "Start FusedLocationProviderClient"
+            }
+        }
+
+        var isSendingStartLocationManager = false
+        binding.btnStartLocationManager.setOnClickListener {
+            appendLog("\n" + binding.btnStartLocationManager.text)
+
+            isSendingStartLocationManager = !isSendingStartLocationManager
+            if (isSendingStartLocationManager) {
+                binding.btnStartLocationManager.text = "Stop LocationManager"
+            } else {
+                binding.btnStartLocationManager.text = "Start LocationManager"
+            }
+        }
     }
 
     fun appendLog(message: String) {
