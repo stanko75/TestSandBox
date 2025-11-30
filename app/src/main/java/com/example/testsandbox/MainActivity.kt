@@ -1,7 +1,6 @@
 package com.example.testsandbox
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
