@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Looper
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -14,7 +15,26 @@ import com.google.android.gms.location.Priority
 import java.util.concurrent.TimeUnit
 
 class MyFusedLocationClient(var logger: ILogger) {
-    fun myRequestLocationUpdates(myActivity: Activity) {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    lateinit var myActivity: Activity
+
+    var locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResultLocal: LocationResult) {
+            logger.log("\nLat: " + locationResultLocal.lastLocation?.latitude.toString()
+                    + "\nLon: " + locationResultLocal.lastLocation?.longitude.toString()
+                    + "\nAltitude" + locationResultLocal.lastLocation?.altitude.toString())
+        }
+    }
+
+    fun startLocationUpdates() {
+        myRequestLocationUpdates(myActivity)
+    }
+
+    fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun myRequestLocationUpdates(myActivity: Activity) {
 
         if (ActivityCompat.checkSelfPermission(
                 myActivity,
@@ -44,19 +64,11 @@ class MyFusedLocationClient(var logger: ILogger) {
             setMinUpdateIntervalMillis(TimeUnit.SECONDS.toMillis(localInterval))
             setMinUpdateDistanceMeters(0F)
         }.build()
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResultLocal: LocationResult) {
-                logger.log("\nLat: " + locationResultLocal.lastLocation?.latitude.toString()
-                        + "\nLon: " + locationResultLocal.lastLocation?.longitude.toString()
-                        + "\nAltitude" + locationResultLocal.lastLocation?.altitude.toString())
-            }
-        }
 
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(myActivity)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(myActivity)
         fusedLocationClient.requestLocationUpdates(
             locationRequest, locationCallback, Looper.getMainLooper()
         )
-
     }
 
     companion object {

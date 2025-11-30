@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         logger.tvLog = tvLog
         logger.maxLines = maxLines
 
+        val myFusedLocationClient = MyFusedLocationClient(logger)
+        myFusedLocationClient.myActivity = this
+
         binding.btnStartFusedLocationProviderClient.text = "Start FusedLocationProviderClient"
 
         var isSendingStartFusedLocationProviderClient = false
@@ -41,11 +44,11 @@ class MainActivity : AppCompatActivity() {
             if (isSendingStartFusedLocationProviderClient) {
                 binding.btnStartFusedLocationProviderClient.text = "Stop FusedLocationProviderClient"
 
-                val myFusedLocationClient = MyFusedLocationClient(logger)
-                myFusedLocationClient.myRequestLocationUpdates(this)
+                myFusedLocationClient.startLocationUpdates()
 
             } else {
                 binding.btnStartFusedLocationProviderClient.text = "Start FusedLocationProviderClient"
+                myFusedLocationClient.stopLocationUpdates()
             }
         }
 
