@@ -26,14 +26,24 @@ class MainActivity : AppCompatActivity() {
         tvLog = findViewById(R.id.tvLog)
         scrollLog = findViewById(R.id.scrollLog)
 
+        val logger = Logger()
+        logger.scrollLog = scrollLog
+        logger.tvLog = tvLog
+        logger.maxLines = maxLines
+
+        binding.btnStartFusedLocationProviderClient.text = "Start FusedLocationProviderClient"
 
         var isSendingStartFusedLocationProviderClient = false
         binding.btnStartFusedLocationProviderClient.setOnClickListener {
-            appendLog("\n" + binding.btnStartFusedLocationProviderClient.text)
+            logger.log("\n" + binding.btnStartFusedLocationProviderClient.text)
 
             isSendingStartFusedLocationProviderClient = !isSendingStartFusedLocationProviderClient
             if (isSendingStartFusedLocationProviderClient) {
                 binding.btnStartFusedLocationProviderClient.text = "Stop FusedLocationProviderClient"
+
+                val myFusedLocationClient = MyFusedLocationClient(logger)
+                myFusedLocationClient.myRequestLocationUpdates(this)
+
             } else {
                 binding.btnStartFusedLocationProviderClient.text = "Start FusedLocationProviderClient"
             }
@@ -41,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         var isSendingStartLocationManager = false
         binding.btnStartLocationManager.setOnClickListener {
-            appendLog("\n" + binding.btnStartLocationManager.text)
+            logger.log("\n" + binding.btnStartLocationManager.text)
 
             isSendingStartLocationManager = !isSendingStartLocationManager
             if (isSendingStartLocationManager) {
@@ -52,17 +62,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun appendLog(message: String) {
-        tvLog.append("\n$message")
-
-        val lines = tvLog.text.split("\n")
-        if (lines.size > maxLines) {
-            val trimmed = lines.takeLast(maxLines).joinToString("\n")
-            tvLog.text = trimmed
-        }
-
-        scrollLog.post {
-            scrollLog.fullScroll(View.FOCUS_DOWN)
-        }
-    }
 }
