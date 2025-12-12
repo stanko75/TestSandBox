@@ -20,9 +20,10 @@ class MyFusedLocationClient(var logger: ILogger) {
 
     var locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResultLocal: LocationResult) {
-            logger.log("\nLat: " + locationResultLocal.lastLocation?.latitude.toString()
+            logger.log("\nFusedLocationProvider: "
+                    + "\nLat: " + locationResultLocal.lastLocation?.latitude.toString()
                     + "\nLon: " + locationResultLocal.lastLocation?.longitude.toString()
-                    + "\nAltitude" + locationResultLocal.lastLocation?.altitude.toString())
+                    + "\nAltitude: " + locationResultLocal.lastLocation?.altitude.toString())
         }
     }
 
