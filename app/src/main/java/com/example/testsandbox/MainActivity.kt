@@ -1,10 +1,12 @@
 package com.example.testsandbox
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testsandbox.databinding.ActivityMainBinding
 
@@ -14,6 +16,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvLog: TextView
     private lateinit var scrollLog: ScrollView
     private val maxLines = 500
+
+    private val openImageDocument =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            if (uri == null) return@registerForActivityResult
+            appendLog("Selected URI: $uri")
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +33,19 @@ class MainActivity : AppCompatActivity() {
 
         tvLog = findViewById(R.id.tvLog)
         scrollLog = findViewById(R.id.scrollLog)
+
+        val pickMedia = this.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                appendLog("Selected URI: $uri")
+            } else {
+                appendLog("No media selected")
+            }
+        }
+
+        binding.btnAndroidPhotoPicker.setOnClickListener {
+            //pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+            openImageDocument.launch(arrayOf("image/jpeg", "image/heic", "image/heif", "image/png"))
+        }
     }
 
     fun appendLog(message: String) {
