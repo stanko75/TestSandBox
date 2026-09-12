@@ -18,13 +18,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        tvLog = findViewById(R.id.tvLog)
-        scrollLog = findViewById(R.id.scrollLog)
+        tvLog = binding.tvLog
+        scrollLog = binding.scrollLog
     }
 
     fun appendLog(message: String) {
