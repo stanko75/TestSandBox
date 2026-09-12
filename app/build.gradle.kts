@@ -5,7 +5,7 @@ plugins {
 android {
     namespace = "com.example.testsandbox"
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
 
     defaultConfig {
